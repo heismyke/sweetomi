@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  sweetomi-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sweetomi
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+    networks:
+      - sweetomi-network
+
+  sweetomi-dev:
+    image: node:20-alpine
+    container_name: sweetomi-dev
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    command: npm run dev -- --host
+    environment:
+      - NODE_ENV=development
+    networks:
+      - sweetomi-network
+
+networks:
+  sweetomi-network:
+    driver: bridge
