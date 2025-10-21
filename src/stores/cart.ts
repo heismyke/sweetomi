@@ -1,5 +1,5 @@
 import { reactive, computed } from 'vue';
-import type { Cart, CartItem, Product } from '../types';
+import type { Cart, Product } from '../types';
 
 const cart = reactive<Cart>({
   items: [],
@@ -43,7 +43,7 @@ export const useCart = () => {
   const updateQuantity = (index: number, quantity: number) => {
     if (quantity <= 0) {
       removeFromCart(index);
-    } else {
+    } else if (cart.items[index]) {
       cart.items[index].quantity = quantity;
       updateTotal();
       saveCart();
